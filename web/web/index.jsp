@@ -68,7 +68,7 @@
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
       
         <jsp:useBean class="br.com.projetoloja.repository.ProdutoDAO" id="listaP" />
-            <c:forEach items="${listaP.produtos}" var="prod">
+            <c:forEach items="${listaP.destaques}" var="prod">
                 <div class="col">
                   <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" 
                        style="background-image: url('https://picsum.photos/400/200?random=${prod.idprodutos}');">

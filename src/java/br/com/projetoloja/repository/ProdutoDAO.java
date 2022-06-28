@@ -63,8 +63,48 @@ public class ProdutoDAO {
         return listAll;
         
         }
+    public List<Produto> buscar(String filtro)
+        {
+            List<Produto> listAll = new ArrayList<Produto>();
+        try {
+            
+            String sql= "select * from produtos where "+filtro;
+            
+            Statement st  = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next())
+                {
+                    Produto obj = new Produto();
+                    obj.setIdprodutos(rs.getInt("idprodutos"));
+                    obj.setNome(rs.getString("nome"));
+                    obj.setDescricao(rs.getString("descricao"));
+                    obj.setMaisinfo(rs.getString("maisinfo"));
+                    obj.setDestaque(rs.getString("destaque"));
+                    obj.setPeso(rs.getDouble("peso"));
+                    obj.setValor(rs.getDouble("valor"));
+                    obj.setAtivo(rs.getString("ativo"));
+                    obj.setCategorias_idcategorias(rs.getInt("categorias_idcategorias"));
+                    
+                    listAll.add(obj);
+                }
+            
+                rs.close();
+                st.close();
+                conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listAll;
+        
+        }
     public List<Produto> getProdutos()
         {
             return lista();
+        }
+    public List<Produto> getDestaques()
+        {
+            return buscar("destaque='s'");
         }
 }
