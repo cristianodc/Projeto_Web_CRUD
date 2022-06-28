@@ -19,6 +19,7 @@ public class Produto {
     private double valor;
     private String destaque;
     private String ativo;
+    private String nomeCat;
     
     public Produto() {
     }
@@ -147,6 +148,20 @@ public class Produto {
      */
     public void setAtivo(String ativo) {
         this.ativo = ativo;
+    }
+
+    /**
+     * @return the nomeCat
+     */
+    public String getNomeCat() {
+        return nomeCat;
+    }
+
+    /**
+     * @param nomeCat the nomeCat to set
+     */
+    public void setNomeCat(String nomeCat) {
+        this.nomeCat = nomeCat;
     }
     
     

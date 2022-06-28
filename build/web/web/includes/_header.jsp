@@ -39,8 +39,8 @@
             <a class="nav-link" href="#">Perguntas Frequentes</a>
           </li>
         </ul>
-        <form class="d-flex" action="">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" action="produtos.jsp">
+            <input class="form-control me-2" type="search" placeholder="Pesquisar por nome" name="q">
           <button class="btn btn-outline-primary" type="submit">Pesquisar</button>
         </form>
       </div>

@@ -9,16 +9,31 @@
         2) Criar um objeto DAO para consultar por ID de categoria
         3) Usar retorno lista para exibir os dados (aqui não usamos o useBean)
       */
-     String id = request.getParameter("idc");
-     Long idL =0L;
-     try {
-             idL =Long.parseLong(id);
-         } catch (Exception e) {
-            idL =0L;
-         }
+      String filtro = "1 != 1";
+       Long idL =0L;
+      if(request.getParameter("idc") != null)
+        {
+                String id = request.getParameter("idc");
+                   
+            try {
+                    idL =Long.parseLong(id);
+                    filtro = "categorias_idcategorias ="+ idL;
+                } catch (Exception e) {
+               idL =0L;
+            }
+        }
+        if(request.getParameter("q") != null)
+        {
+                String nome = request.getParameter("q");
+                   
+          
+                    filtro = "p.nome like '%"+nome+"%'";
+               
+        }
+    
          
       ProdutoDAO dao = new ProdutoDAO();
-      List<Produto> listaP  = dao.buscar("categorias_idcategorias ="+ idL);
+      List<Produto> listaP  = dao.buscar(filtro);
       pageContext.setAttribute("listaP", listaP);
   %>
   <div class="container px-4 py-4" id="custom-cards">
@@ -37,7 +52,7 @@
                           ${prod.valor}
                         </li>
                         <li class="d-flex align-items-center me-3">
-                          <small>${prod.categorias_idcategorias}</small>
+                          <small>${prod.nomeCat}</small>
                         </li>
                       </ul>
                     </div>

@@ -68,7 +68,9 @@ public class ProdutoDAO {
             List<Produto> listAll = new ArrayList<Produto>();
         try {
             
-            String sql= "select * from produtos where "+filtro;
+            String sql= "select p.* , c.nome as nomeCat from produtos p "
+                    + "inner join categorias c on c.idcategorias = p.categorias_idcategorias "
+                    + " where "+filtro;
             
             Statement st  = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -85,6 +87,7 @@ public class ProdutoDAO {
                     obj.setValor(rs.getDouble("valor"));
                     obj.setAtivo(rs.getString("ativo"));
                     obj.setCategorias_idcategorias(rs.getInt("categorias_idcategorias"));
+                    obj.setNomeCat(rs.getString("nomeCat"));
                     
                     listAll.add(obj);
                 }
