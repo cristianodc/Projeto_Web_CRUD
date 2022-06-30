@@ -17,7 +17,7 @@
   <body class="text-center">
     
 <main class="form-signin">
-  <form action="login-exec" method="post">
+    <form action="../login-exec" method="post">
       <img class="mb-4" src="../web/assets/img/logo.png" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Acesso Restrito</h1>
 
