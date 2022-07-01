@@ -6,6 +6,7 @@ package br.com.projetoloja.controller;
 
 import br.com.projetoloja.model.Usuario;
 import br.com.projetoloja.repository.UsuarioDAO;
+import br.com.projetoloja.util.Util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -32,12 +33,14 @@ public class LoginExec extends HttpServlet {
         String ema= request.getParameter("ema");
         String senha= request.getParameter("sen");
         HttpSession session = request.getSession();
-       String destino="";
-       String msg = "";
+        String destino="";
+        String msg = "";
        //consultr dados usando DAO
         UsuarioDAO daoUso = new UsuarioDAO();
         
         List<Usuario> lista  = new ArrayList<Usuario>();
+        
+        senha  = Util.Sha01(senha);
         lista = daoUso.buscar(ema,senha);
         
         if(lista.size() > 0)
