@@ -68,7 +68,9 @@ public class LoginExec extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        validarLogin(request, response);
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.sendRedirect("index.jsp");
     }
 
     /**

@@ -19,7 +19,7 @@
             </div>
             <div class="navbar-nav">
               <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="login-exec">Logout</a>
+                  <a class="nav-link px-3" href="../login-exec">Logout</a>
               </div>
             </div>
         </header>

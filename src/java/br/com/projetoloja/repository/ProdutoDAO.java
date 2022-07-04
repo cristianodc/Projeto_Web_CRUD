@@ -7,6 +7,7 @@ package br.com.projetoloja.repository;
 import br.com.projetoloja.config.Conex;
 import br.com.projetoloja.model.Produto;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,6 +29,44 @@ public class ProdutoDAO {
         conn = Conex.getConection();
     }
     
+    public Produto buscarId(int id)
+        {
+            Produto obj = null;
+             try {
+
+                    String sql= "select p.* , c.nome as nomeCat from produtos p "
+                            + "inner join categorias c on c.idcategorias = p.categorias_idcategorias "
+                            + " where p.idprodutos = ?";
+
+                   PreparedStatement st = conn.prepareStatement(sql);
+                   st.setInt(1, id);
+                    ResultSet rs = st.executeQuery();
+
+                    while(rs.next())
+                        {
+                             obj = new Produto();
+                            obj.setIdprodutos(rs.getInt("idprodutos"));
+                            obj.setNome(rs.getString("nome"));
+                            obj.setDescricao(rs.getString("descricao"));
+                            obj.setMaisinfo(rs.getString("maisinfo"));
+                            obj.setDestaque(rs.getString("destaque"));
+                            obj.setPeso(rs.getDouble("peso"));
+                            obj.setValor(rs.getDouble("valor"));
+                            obj.setAtivo(rs.getString("ativo"));
+                            obj.setCategorias_idcategorias(rs.getInt("categorias_idcategorias"));
+                            obj.setNomeCat(rs.getString("nomeCat"));
+                      
+                }
+            
+                rs.close();
+                st.close();
+                conn.close();
+
+            } catch (SQLException ex) {
+                 ex.printStackTrace();
+            }
+             return obj;
+        }
     public List<Produto> lista()
         {
             List<Produto> listAll = new ArrayList<Produto>();
@@ -109,5 +149,74 @@ public class ProdutoDAO {
     public List<Produto> getDestaques()
         {
             return buscar("destaque='s'");
+        }
+    
+    public void insertProduto(Produto prod)
+        {
+        try {
+            String sql = "INSERT INTO PRODUTOS (nome,descricao,maisinfo,destaque,peso,valor,ativo,categorias_idcategorias)"
+                    +"values(?,?,?,?,?,?,?,?)";
+            
+            PreparedStatement st = conn.prepareStatement(sql);
+            
+            st.setString(1, prod.getNome());
+            st.setString(2, prod.getDescricao());
+            st.setString(3, prod.getMaisinfo());
+            st.setString(4, prod.getDestaque());
+            st.setDouble(5, prod.getPeso());
+            st.setDouble(6, prod.getValor());
+            st.setString(7, prod.getAtivo());
+            st.setInt(8, prod.getCategorias_idcategorias());
+            
+            st.executeUpdate();
+            st.close();
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+            
+    }
+    
+    public void uptadeProduto(Produto prod)
+        {
+             try {
+                  String sql = "update produtos set nome=?, descricao=?, maisinfo=?,destaque=?, peso=?, valor=?, ativo=?, categorias_idcategorias=? where idprodutos=?";
+                        PreparedStatement st = conn.prepareStatement(sql);
+
+                        st.setString(1, prod.getNome());
+                        st.setString(2, prod.getDescricao());
+                        st.setString(3, prod.getMaisinfo());
+                        st.setString(4, prod.getDestaque());
+                        st.setDouble(5, prod.getPeso());
+                        st.setDouble(6, prod.getValor());
+                        st.setString(7, prod.getAtivo());
+                        st.setInt(   8, prod.getCategorias_idcategorias());
+                        st.setInt(   9, prod.getIdprodutos());
+
+                        st.executeUpdate();
+                        st.close();
+                        conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+                 JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+            
+     }
+    
+     public void deleteProd(int id)
+        {
+                    int rs = 0;
+              try {
+                  String sql = "delete from produtos where idprodutos = ?";
+                  PreparedStatement st = conn.prepareStatement(sql);
+                  st.setInt(1, id);
+                   rs =  st.executeUpdate();
+                   st.close();
+                  conn.close();
+              } catch (SQLException ex) {
+                  ex.printStackTrace();
+              }
+
+              
         }
 }

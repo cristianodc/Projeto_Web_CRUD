@@ -7,6 +7,7 @@ package br.com.projetoloja.repository;
 import br.com.projetoloja.config.Conex;
 import br.com.projetoloja.model.Categoria;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -61,5 +62,89 @@ public class CategoriaDAO {
         {
             return listar();
         }
+
+    public int cadastrar(Categoria cat) {
+       
+        String sql = "insert into categorias(nome,descricao,ativo)values(?,?,?)";
+        int res = 0;
+      try {
+          PreparedStatement st = this.conn.prepareStatement(sql);
+          st.setString(1, cat.getNome());
+          st.setString(2, cat.getDescricao());
+          st.setString(3, cat.getAtivo());
+          
+          res = st.executeUpdate();
+          st.close();
+          this.conn.close();
+          
+      } catch (SQLException ex) {
+          Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      
+      return res;
+    }
     
+    public void deleteCat(int id)
+        {
+                    int rs = 0;
+              try {
+                  String sql = "delete from categorias where idcategorias = ?";
+                  PreparedStatement st = conn.prepareStatement(sql);
+                  st.setInt(1, id);
+                   rs =  st.executeUpdate();
+                   st.close();
+                  conn.close();
+              } catch (SQLException ex) {
+                  ex.printStackTrace();
+              }
+
+              
+        }
+    public void updateCat(Categoria cat)
+        {
+            try {
+                String sql = "UPDATE categorias set nome = ? , descricao  = ? , ativo = ? where idcategorias=?";
+
+                PreparedStatement st = conn.prepareStatement(sql);
+
+                st.setString(1, cat.getNome());
+                st.setString(2, cat.getDescricao());
+                st.setString(3, cat.getAtivo());
+                st.setInt(4, cat.getIdcategorias());
+                st.executeUpdate();
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    
+    public Categoria buscarCatId( int id)
+        {
+            Categoria obj = new Categoria();
+            try {
+                String sql = "Select * from categorias where idcategorias = ?";
+                PreparedStatement st = this.conn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                
+                while(rs.next())
+                    {
+                        
+                        obj.setIdcategorias(rs.getInt("idcategorias"));
+                        obj.setNome(rs.getString("nome"));
+                        obj.setDescricao(rs.getString("descricao"));
+                        obj.setAtivo(rs.getString("ativo"));
+                        
+                    }
+                
+                rs.close();
+                st.close();
+                conn.close();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          return obj;
+        }
 }
